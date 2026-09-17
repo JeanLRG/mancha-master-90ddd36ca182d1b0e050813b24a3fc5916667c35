@@ -1,0 +1,14 @@
+# Gerador de Números Aleatórios - Processador Mancha (T1)
+
+Este programa em Assembly para o processador Mancha gera **10 números pseudo-aleatórios** (entre 0 e 9). Como a arquitetura não possui um gerador nativo, o código utiliza o **contador do relógio (clock)** do processador combinado com a **entropia de entrada do usuário** para garantir a aleatoriedade.
+
+## Como funciona
+1. **Entropia (Tempo de espera):** O programa entra em um loop aguardando uma entrada do teclado (porta `0x02`). Enquanto aguarda, o relógio do sistema (porta `0x21`) continua rodando em alta velocidade. O tempo exato que o usuário leva para enviar o caractere define a semente (seed).
+2. **Mistura:** O valor capturado do relógio sofre operações de `XOR` e `SHIFT` para espalhar os bits.
+3. **Módulo 10:** Como o Mancha não possui instrução de divisão, o código aplica um laço de subtrações sucessivas por 10 até encontrar o resto.
+4. **Conversão ASCII:** O resultado recebe um offset de `+48` para ser impresso como caractere numérico na console (porta `0x01`), seguido de uma quebra de linha (ASCII 10).
+
+## Como compilar
+Utilize o montador fornecido junto com o simulador:
+```bash
+./bin/montador num_aleatorio.asm
